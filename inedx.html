@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Google Maps App</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hello!</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!--     import google map using my google map key -->
+    <script
+            
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxyGlW34U-Nk1zLJ2OiWgdaFTyUjYNe5I&callback=initMap&libraries=places&v=beta&map_ids=2e440bbea2e610de"
+      defer
+    ></script>
+    <!--     import bootsrap -->
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+      integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+      integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+      crossorigin="anonymous"
+    />
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- import the webpage's javascript file -->
+    <script src="script.js" defer></script>
+    <!--     google font -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Sofia"
+    />
+    <script>
+      var i = 0;
+      var map;
+
+      function initMap() {
+        const CSUNCenter = { lat: 34.240007, lng: -118.53018 };
+        //create map object
+        map = new google.maps.Map(document.getElementById("map"), {
+          mapId: "2e440bbea2e610de",
+          center: CSUNCenter,
+          zoom: 17,
+          // using these two for disabling the pan and zoom
+          gestureHandling: "none",
+          zoomControl: false,
+          disableDefaultUI: true,
+          
+          
+        });
+        var styles = {
+          default : null,
+        hide: [
+         
+          {
+            featureType: 'all',
+            elementType: 'labels',
+            stylers: [{visibility: 'off'}]
+          }
+        ]
+      };
+        map.setOptions({styles: styles['hide']});
+        //add even listener to listen to the double click even for run the function
+        map.addListener("dblclick", function(e) {
+          if (i != 5) {
+            placeRectangle(e.latLng, map);
+            i++;
+          } else if (i == 5) {
+            google.maps.event.clearInstanceListeners(map);
+          }
+        });
+        
+        
+      }
+      
+      function placeRectangle(latLng, map) {
+        var myMarker = new google.maps.Marker({
+          position: latLng,
+          map: map
+        });
+
+        // console.dir(myMarker.position.lat);
+        // console.log(myMarker.position.lng);
+
+        // if the location is correct location then will be green otherwise will be red
+        if (
+          locations[i][0] > myMarker.position.lat() &&
+          locations[i][1] < myMarker.position.lat() &&
+          locations[i][2] < myMarker.position.lng() &&
+          locations[i][3] > myMarker.position.lng()
+        ) {
+          //places a green rectangle if the user's selected location is correct
+          var rectangle = new google.maps.Rectangle({
+            strokeColor: "#228C22",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#228C22",
+            fillOpacity: 0.35,
+            map,
+            bounds: {
+              north: locations[i][0],
+              south: locations[i][1],
+              west: locations[i][2],
+              east: locations[i][3]
+            }
+          });
+          // means the number of correct answers should be increase
+          correctAnswerCounte++;
+
+          switch (i) {
+            case 0:
+              answer1Correct();
+              break;
+            case 1:
+              answer2Correct();
+              break;
+            case 2:
+              answer3Correct();
+              break;
+            case 3:
+              answer4Correct();
+              break;
+            case 4:
+              answer5Correct();
+              break;
+          }
+        } else {
+          //red rectangle
+          var rectangle = new google.maps.Rectangle({
+            strokeColor: "#FF0000",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: "#FF0000",
+            fillOpacity: 0.35,
+            map,
+            bounds: {
+              north: locations[i][0],
+              south: locations[i][1],
+              west: locations[i][2],
+              east: locations[i][3]
+            }
+          });
+
+          wrongAnswerCounter++;
+          switch (i) {
+            case 0:
+              answer1Wrong();
+              break;
+            case 1:
+              answer2Wrong();
+              break;
+            case 2:
+              answer3Wrong();
+              break;
+            case 3:
+              answer4Wrong();
+              break;
+            case 4:
+              answer5Wrong();
+              break;
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="row">
+          <div class="col-md-6 col">
+            <div class="textBorder">
+              <h1 class="startP">welcome map quize</h1>
+              <div id="info"></div>
+              <h5>
+                please double click on the location have been asked here.
+              </h5>
+              <div id="questionWrapper">
+                <p id="question1" class="ques">where is the Oviatt Library?</p>
+                <p id="answer1"></p>
+                <p id="question2" class="ques" style="visibility: hidden">
+                  where is the sierra Hall?
+                </p>
+                <p id="answer2"></p>
+                <p id="question3" class="ques" style="visibility: hidden">
+                  where is the Police Services?
+                </p>
+                <p id="answer3"></p>
+                <p id="question4" class="ques" style="visibility: hidden">
+                  where is the Art and Design Center?
+                </p>
+                <p id="answer4"></p>
+                <p id="question5" class="ques" style="visibility: hidden">
+                  where is Sequioa Hall?
+                </p>
+                <p id="answer5"></p>
+                <h1 class="hidden" id="end-message"></h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div id="map" style="width:100%;height:900px;"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script
+      src="https://code.jquery.com/jquery-2.2.1.min.js"
+      integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+

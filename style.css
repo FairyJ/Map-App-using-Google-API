@@ -1,0 +1,46 @@
+*, *:before, *:after {
+	box-sizing: inherit;
+  }
+   
+  html,
+  body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	margin: 10px;
+	background-color : #F2F4F6;
+  }
+  
+  .col{
+	padding-top:80px;
+	padding-left: 30px;
+	text-align: justify;
+	
+  }
+  .textBorder{
+	border-style: solid ;
+	border-color: #626873;
+	text-align: center;
+	box-sizing: border-box;
+	width: 600px;
+	height: 600px;
+	padding: 30px;  
+	border-weidth: 10px;
+  }
+  
+  .ques{
+	font-size: 20px;
+	font-style: oblique;
+  }
+  
+  .startP{
+	font-family: "Sofia";
+	font-weight: bold;
+  }
+   .correct {
+	  color: green;  
+	}
+  
+	.wrong {
+	  color: red;  
+	}
